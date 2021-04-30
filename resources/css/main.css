@@ -1,0 +1,102 @@
+#add_user {
+    margin: 10px 0;
+    display: block;
+}
+
+#add_user > .container {
+    width: 100vw;
+    justify-content: center;
+    display: flex;
+}
+
+#add_user * {
+    margin: 0 10px 0 0;
+}
+
+#add_user label {
+    margin: 0;
+}
+
+#add_user label, button {
+    padding: 5px;
+}
+
+#add_user .method {
+    padding: 5px 0;
+}
+
+#add_user .method * {
+    padding: 0;
+    margin: 0;
+}
+
+#add_user .method input {
+    width: 16px;
+    height: 16px;
+}
+
+.type_btn {
+    max-width: 50vw;
+    margin: 20px auto;
+    justify-content: center;
+    display: flex;
+}
+
+.type_btn > div {
+    margin: 0 10px 0 0;
+    padding: 0;
+    width: 100%;
+}
+
+.type_btn > div > button {
+    margin: 0 10px;
+    width: 100%;
+    display: block;
+}
+
+.type_btn button {
+    margin: 0 10px;
+    width: 100%;
+    display: block;
+}
+
+.user_table {
+    justify-content: center;
+    display: flex;
+    margin: 20px;
+}
+
+.user_table table {
+    max-width: 50vw;
+    border-spacing: 0;
+    border: 1px solid black;
+}
+
+.user_table td, tr {
+    max-width: 400px;
+    text-align: center;
+    border: 1px solid black;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.user_table tr .id {
+    width: 5px;
+
+}
+
+#errors {
+    width: 100%;
+    padding: 10px 0;
+    justify-content: center;
+    display: flex;
+}
+
+#errors li{
+    width: 100%;
+}
+
+#type_name h1 {
+    width: 100%;
+    text-align: center;
+}
