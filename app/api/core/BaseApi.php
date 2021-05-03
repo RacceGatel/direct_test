@@ -18,4 +18,8 @@ class BaseApi
 
         return array_combine($keys,$val);
     }
+
+    protected function valid_params($gets) {
+
+    }
 }

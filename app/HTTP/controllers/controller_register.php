@@ -5,9 +5,11 @@ class controller_register extends Controller
 {
     public function action_index($gets=null)
     {
-        if(!((new api_auth())->check_login()))
+        session_start();
+        if(isset($_SESSION['user'])) {
             header('Location: http://direct.ru/');
-
+            exit;
+        }
         $this->view->generate('register.php', 'layout.php');
     }
 

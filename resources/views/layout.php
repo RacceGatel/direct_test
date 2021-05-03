@@ -1,6 +1,7 @@
 <html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="icon" href="data:;base64,=">
     <title>Справочник</title>
     <link rel="stylesheet" href="<?=_css?>style.css">
 

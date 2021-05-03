@@ -37,7 +37,6 @@ class api_user extends BaseApi
         $user = new model_users();
         http_response_code(200);
         echo json_encode($user->get_all(), JSON_UNESCAPED_UNICODE);
-
     }
 
     public function put_data($gets = null)
@@ -49,31 +48,32 @@ class api_user extends BaseApi
         header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
         $params = $this->get_params($gets,array('name','email','phone','type'));
+
         switch ($params['type']) {
             case 'db':
-                $this->put_db($gets);
+                $this->put_db($params);
                 break;
             case 'cache':
-                $this->put_cache($gets);
+                $this->put_cache($params);
                 break;
             case 'json':
-                $this->put_json($gets);
+                $this->put_json($params);
                 break;
             case 'xlsx':
-                $this->put_xlsx($gets);
+                $this->put_xlsx($params);
                 break;
         }
     }
 
-    public function put_db($gets)
+    public function put_db($params)
     {
         $this->check_auth();
-        $params = $this->get_params($gets,array('name','email','phone'));
+        $this->valid_params($params);
         $user = new model_users();
-        return $user->insert(array($params['name'], $params['email'], $params['phone']));
+        $user->insert(array($params['name'], $params['email'], $params['phone']));
     }
 
-    public function put_cache($gets)
+    public function put_cache($params)
     {
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
@@ -82,8 +82,6 @@ class api_user extends BaseApi
         header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
         $this->check_auth();
-
-        $params = $this->get_params($gets,array('id','name','email','phone'));
 
         http_response_code(200);
 
@@ -103,7 +101,7 @@ class api_user extends BaseApi
         readfile($path);
     }
 
-    public function put_json($gets)
+    public function put_json($params)
     {
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
@@ -114,8 +112,6 @@ class api_user extends BaseApi
         $this->check_auth();
 
         $path = _storage . 'users.json';
-
-        $params = $this->get_params($gets,array('name','email','phone'));
 
         try {
             $json = file_get_contents($path);
@@ -184,7 +180,7 @@ class api_user extends BaseApi
     }
 
 
-    public function put_xlsx($gets)
+    public function put_xlsx($params)
     {
         header("Access-Control-Allow-Origin: *");
         header("Content-Type: application/json; charset=UTF-8");
@@ -193,8 +189,6 @@ class api_user extends BaseApi
         header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
         $this->check_auth();
-
-        $params = $this->get_params($gets,array('name','email','phone'));
 
         require_once _root.'/Classes/PHPExcel.php';
 
@@ -229,7 +223,7 @@ class api_user extends BaseApi
         } catch (Exception $ex)
         {
             echo $ex;
-            http_response_code(200);
+            http_response_code(400);
         }
     }
 
@@ -246,14 +240,19 @@ class api_user extends BaseApi
         header("Access-Control-Allow-Methods: POST");
         header("Access-Control-Max-Age: 3600");
         header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
         $this->check_auth();
+
         try {
             (new model_user_pass())->refresh_table();
             (new model_users())->refresh_table();
+            (new api_auth())->logout();
             http_response_code(200);
         } catch (PDOException $ex){
             http_response_code(401);
             echo json_encode($ex);
         }
+
+
     }
 }

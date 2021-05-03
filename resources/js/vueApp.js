@@ -20,7 +20,7 @@ var adders = new Vue({
                 case "db":
                     axios
                         .post(window.location.href + '/api/user/put_data/?name='
-                            + this.name + '&email=' + this.email + '&phone=' + this.phone + '&type=' + this.pick).then(() => {
+                            + this.name + '&email=' + this.email + '&phone=' + this.phone + '&type=' + this.pick).then((response) => {
                         this.clear_form();
                         renderer.get_db();
                     }).catch((error) => {
@@ -86,29 +86,47 @@ var adders = new Vue({
             this.phone = null;
             this.pick = null;
         },
-        checkForm: function (e) {
-            if (this.name && this.email && this.phone && this.pick) {
-                this.errors = [];
-                return true;
-            }
-
+        checkForm() {
             this.errors = [];
 
             if (!this.name) {
                 this.errors.push('Требуется указать ФИО');
+            } else if (!this.validName(this.name)) {
+                this.errors.push('Укажите корректный ФИО');
             }
+
             if (!this.email) {
                 this.errors.push('Требуется указать почту');
+            } else if (!this.validEmail(this.email)) {
+                this.errors.push('Укажите корректный адрес электронной почты');
             }
+
             if (!this.phone) {
                 this.errors.push('Требуется указать телефон');
+            } else if (!this.validPhone(this.phone)) {
+                this.errors.push('Укажите корректный номер телефона');
             }
+
             if (!this.pick) {
                 this.errors.push('Требуется выбрать источник данных');
             }
-
+            console.log(this.errors);
+            if (this.errors.length === 0) {
+                return true;
+            }
         },
-
+        validName: function (name) {
+            var re = /^[a-zA-Zа-яёА-ЯЁ\s\-]{3,40}$/u;
+            return re.test(name);
+        },
+        validEmail: function (email) {
+            var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        },
+        validPhone: function (phone) {
+            var re = /^((7|8)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
+            return re.test(phone);
+        }
     }
 });
 
@@ -154,6 +172,7 @@ var renderer = new Vue({
             axios
                 .post(window.location.href + '/api/user/refresh_db').then(() => {
                 this.get_db();
+                window.location.reload();
             }).catch((error) => {
                 adders.errors = [];
                 adders.errors.push(error.response.statusText);
@@ -162,4 +181,73 @@ var renderer = new Vue({
     }
 });
 
+new Vue({
+    el: '#register_user',
+    data: {
+        name: null,
+        email: null,
+        phone: null,
+        psw: null,
+        errors: []
+    },
+
+    methods: {
+        register_user: function () {
+
+            if (!this.checkForm()) {
+                return;
+            }
+            window.location.href = '/api/auth/register/?name='
+            + this.name + '&email=' + this.email + '&phone=' + this.phone + '&psw=' + this.psw;
+        },
+        clear_form() {
+            this.name = null;
+            this.email = null;
+            this.phone = null;
+            this.psw = null;
+        },
+        checkForm() {
+            this.errors = [];
+
+            if (!this.name) {
+                this.errors.push('Требуется указать ФИО');
+            } else if (!this.validName(this.name)) {
+                this.errors.push('Укажите корректный ФИО');
+            }
+
+            if (!this.email) {
+                this.errors.push('Требуется указать почту');
+            } else if (!this.validEmail(this.email)) {
+                this.errors.push('Укажите корректный адрес электронной почты');
+            }
+
+            if (!this.phone) {
+                this.errors.push('Требуется указать телефон');
+            } else if (!this.validPhone(this.phone)) {
+                this.errors.push('Укажите корректный номер телефона');
+            }
+
+            if (!this.psw) {
+                this.errors.push('Пароль не введен');
+            }
+
+            console.log(this.errors);
+            if (this.errors.length === 0) {
+                return true;
+            }
+        },
+        validName: function (name) {
+            var re = /^[a-zA-Zа-яёА-ЯЁ\s\-]{3,40}$/u;
+            return re.test(name);
+        },
+        validEmail: function (email) {
+            var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        },
+        validPhone: function (phone) {
+            var re = /^((7|8)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
+            return re.test(phone);
+        }
+    }
+});
 

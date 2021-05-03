@@ -3,7 +3,7 @@
     text-align: center;
 }
 
-#auth {
+.auth {
     width: 100%;
     height: 100%;
     margin: 0;
@@ -13,43 +13,43 @@
 
 }
 
-#auth > .container {
+.auth > .container {
     margin: auto auto;
     padding: 10px 0;
     display: block;
 }
 
-#auth .container *{
+.auth .container *{
     width: 100%;
     margin: 0 auto 10px auto;
     text-align: center;
     display: block;
 }
 
-#auth  > .container > input, button{
+.auth  > .container > input, button{
     padding: 5px 0;
     display: block;
 }
 
-#auth  > .container label {
+.auth  > .container label {
     padding: 0;
     margin: 0;
     display: block;
 }
 
-#auth  > .container b {
+.auth  > .container b {
     padding: 0;
     margin: 0;
     display: block;
 }
 
 
-#auth > .container > button {
+.auth > .container > button {
     font-weight: bold;
     background-color: coral;
     border-style: none;
 }
 
-#auth > .container > button:hover {
+.auth > .container > button:hover {
     background-color: burlywood;
 }

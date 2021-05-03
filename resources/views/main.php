@@ -1,34 +1,32 @@
 <? include _views.'header.php'?>
-<form  id="add_user">
+<form id="add_user" class="action_user_add">
     <div class="container">
-
-
         <label for="name"><b>ФИО</b></label>
-        <input v-model="name" type="text" placeholder="Введите ФИО" name="name">
+        <input v-model="name" type="text" placeholder="Введите ФИО" name="name" required>
 
         <label for="email"><b>email</b></label>
-        <input v-model="email" placeholder="Введите почту" name="email">
+        <input type="email" v-model="email" placeholder="Введите почту" name="email" required>
 
-        <label for="phone"><b>телефон</b></label>
-        <input v-model="phone" placeholder="Введите телефон" name="phone">
+        <label for="phone"><b>телефон</b>(без +)</label>
+        <input type="text" v-model="phone" placeholder="Введите телефон" name="phone" required>
 
         <button v-on:click='add_user' type="button">Добавить</button>
 
         <div class="method">
             <input v-model="pick" type="radio" id="db"
-                   name="type" value="db">
+                   name="type" value="db" required>
             <label for="db">DB</label>
 
             <input v-model="pick" type="radio" id="cache"
-                   name="type" value="cache">
+                   name="type" value="cache" required>
             <label for="cache">Cache</label>
 
             <input v-model="pick" type="radio" id="json"
-                   name="type" value="json">
+                   name="type" value="json" required>
             <label for="json">Json</label>
 
             <input v-model="pick" type="radio" id="xlsx"
-                   name="type" value="xlsx">
+                   name="type" value="xlsx" required>
             <label for="xlsx">xlsx</label>
         </div>
 
@@ -55,7 +53,7 @@
             <button v-on:click="get_xlsx()">xlsx</button>
             <button type="button" onclick="location.href='/api/user/get_xlsx_file'">xlsx-скачать</button>
         </div>
-        <button v-on:click="refresh_db()">Обновить базу данных</button>
+        <button v-on:click="refresh_db()">Очистить базу данных и выйти с аккаунта</button>
     </div>
 
     <div id="type_name">
